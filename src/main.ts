@@ -9,19 +9,25 @@ async function bootstrap() {
  
   // const app = await NestFactory.create(AppModule);
 
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-    transport: Transport.NATS,
-    options: {
-      servers: ['nats://localhost:4222'], 
+  console.log(envs.natsServers)
+ 
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.NATS,
+      options: {
+        servers: envs.natsServers,
+      }
     },
-  });
+  );
 
-  app.useGlobalPipes(new ValidationPipe({
-    stopAtFirstError: false,
-    transform: true,
-    whitelist: true, 
-  }));
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    })
+    );
+ 
   // await app.listen(envs.port);
   await app.listen();
    
