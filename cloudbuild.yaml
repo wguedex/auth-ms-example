@@ -2,6 +2,9 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/tienda-microservices-427201/auth-ms', '.']
 
+artifacts:
+  objects:
+    location: 'gs://tienda-ms-bucket'
+    paths: ['**']
 options:
-  logging: REGIONAL_USER_OWNED_BUCKET
-  logsBucket: gs://tienda-ms-bucket
+  logging: CLOUD_LOGGING_ONLY
